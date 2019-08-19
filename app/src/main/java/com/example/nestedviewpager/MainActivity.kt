@@ -12,12 +12,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        view_pager.adapter = object: FragmentStatePagerAdapter(supportFragmentManager) {
+        view_pager.adapter = object : FragmentStatePagerAdapter(supportFragmentManager) {
 
             val views = listOf(
-                ViewPagerFragment.newInstance(),
-                ViewPagerFragment.newInstance(),
-                ViewPagerFragment.newInstance()
+                NestedViewPagerFragment.newInstance(),
+                NestedViewPagerFragment.newInstance(),
+                NestedViewPagerFragment.newInstance()
             )
 
             override fun getCount(): Int = views.count()
