@@ -9,24 +9,29 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
 import kotlinx.android.synthetic.main.fragment_nested_view_pager.*
+import android.R.attr.accountType
+import android.widget.RemoteViews
+
 
 class NestedViewPagerFragment : Fragment() {
+
+    private lateinit var dataViews: ArrayList<DataView>
 
     override fun onResume() {
         super.onResume()
 
         nested_view_pager.adapter = object : FragmentStatePagerAdapter(childFragmentManager) {
 
-            val views = listOf(
-                ViewFragment.newInstance(Color.RED),
-                ViewFragment.newInstance(Color.GREEN)
-            )
+            override fun getCount(): Int = dataViews.count()
 
-            override fun getCount(): Int = views.count()
-
-            override fun getItem(position: Int): Fragment = views[position]
+            override fun getItem(position: Int): Fragment = ViewFragment.newInstance(dataViews[position].color)
 
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        dataViews = arguments?.getParcelableArrayList<DataView>("data")?: arrayListOf()
     }
 
     override fun onCreateView(
@@ -39,6 +44,10 @@ class NestedViewPagerFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() = NestedViewPagerFragment()
+        fun newInstance(dataViews: ArrayList<DataView>) = NestedViewPagerFragment().apply {
+            arguments = Bundle().apply {
+                putParcelableArrayList("data", dataViews)
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.nestedviewpager
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -14,21 +15,57 @@ class MainActivity : AppCompatActivity() {
 
         view_pager.adapter = object : FragmentStatePagerAdapter(supportFragmentManager) {
 
-            val views = listOf(
-                NestedViewPagerFragment.newInstance(),
-                NestedViewPagerFragment.newInstance(),
-                NestedViewPagerFragment.newInstance()
-            )
+            override fun getCount(): Int = data.count()
 
-            override fun getCount(): Int = views.count()
+            override fun getPageTitle(position: Int): CharSequence = data[position].title
 
-            override fun getPageTitle(position: Int): CharSequence = position.toString()
-
-            override fun getItem(position: Int): Fragment = views[position]
+            override fun getItem(position: Int): Fragment = NestedViewPagerFragment.newInstance(dataViews = data[position].views)
 
         }
 
         tab_layout.setupWithViewPager(view_pager)
 
     }
+
+    val data = arrayListOf(
+        Data(
+            title = "first",
+            views = arrayListOf(
+                DataView(
+                    color = Color.RED,
+                    text = ""
+                ),
+                DataView(
+                    color = Color.GREEN,
+                    text = ""
+                )
+            )
+        ),
+        Data(
+            title = "second",
+            views = arrayListOf(
+                DataView(
+                    color = Color.RED,
+                    text = ""
+                ),
+                DataView(
+                    color = Color.GREEN,
+                    text = ""
+                )
+            )
+        ),
+        Data(
+            title = "third",
+            views = arrayListOf(
+                DataView(
+                    color = Color.RED,
+                    text = ""
+                ),
+                DataView(
+                    color = Color.GREEN,
+                    text = ""
+                )
+            )
+        )
+    )
 }
