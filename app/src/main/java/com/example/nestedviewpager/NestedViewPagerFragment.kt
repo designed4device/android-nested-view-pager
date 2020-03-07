@@ -1,37 +1,20 @@
 package com.example.nestedviewpager
 
-
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentStatePagerAdapter
 import kotlinx.android.synthetic.main.fragment_nested_view_pager.*
-import android.R.attr.accountType
-import android.widget.RemoteViews
-
 
 class NestedViewPagerFragment : Fragment() {
 
-    private lateinit var dataViews: ArrayList<DataView>
-
-    override fun onResume() {
-        super.onResume()
-
-        nested_view_pager.adapter = object : FragmentStatePagerAdapter(childFragmentManager) {
-
-            override fun getCount(): Int = dataViews.count()
-
-            override fun getItem(position: Int): Fragment = ViewFragment.newInstance(dataViews[position].color)
-
-        }
+    private val color by lazy {
+        arguments?.getInt("color")!!
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        dataViews = arguments?.getParcelableArrayList<DataView>("data")?: arrayListOf()
+    private val message by lazy {
+        arguments?.getString("message")!!
     }
 
     override fun onCreateView(
@@ -42,12 +25,22 @@ class NestedViewPagerFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_nested_view_pager, container, false)
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(dataViews: ArrayList<DataView>) = NestedViewPagerFragment().apply {
-            arguments = Bundle().apply {
-                putParcelableArrayList("data", dataViews)
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        fragment_nested_view_pager_text_view.apply {
+            this.setBackgroundColor(color)
+            text = message
         }
+    }
+
+    companion object {
+        fun newInstance(color: Int, message: String) =
+            NestedViewPagerFragment().apply {
+                arguments = Bundle().apply {
+                    putInt("color", color)
+                    putString("message", message)
+                }
+            }
     }
 }
